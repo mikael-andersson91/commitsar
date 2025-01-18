@@ -42,7 +42,7 @@ func generateMarkdownTable(commits []FailingCommit) string {
     sb.WriteString("| hash | failure | text |\n")
     sb.WriteString("|------|---------|------|\n")
     for _, commit := range commits {
-        sb.WriteString(fmt.Sprintf("| %s | %s | %s |\n", commit.Hash, commit.Error.Error(), strings.TrimSpace(commit.Message)))
+        sb.WriteString(fmt.Sprintf("| %s | %s | %s |\n", commit.Hash, commit.Error.Error(), strings.ReplaceAll(strings.TrimSpace(commit.Message), "\n", "<br>")))
     }
     return sb.String()
 }
