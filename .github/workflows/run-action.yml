@@ -1,0 +1,28 @@
+name: Run Action
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  run-commitsar-action:
+    name: Run Action
+    runs-on: ubuntu-latest
+    steps:
+      - id: set-pr-ref
+        if: github.event_name == 'pull_request'
+        run: echo "ref=${{ github.event.pull_request.head.sha }}" >> $GITHUB_OUTPUT
+
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ steps.set-pr-ref.outputs.ref }}
+
+      - name: Commitsar
+        uses: ./
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
